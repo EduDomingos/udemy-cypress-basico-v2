@@ -16,7 +16,7 @@ describe('Central de Atendinebto ao Cliente TAT', function(){
   it('preenche os campos obrigatórios e envia o formulário', ()=>{
     cy.get('#firstName').type('Eduardo')
     cy.get('#lastName').type('Domingos')
-    cy.get('#email').type('edudomingos@gmail.com')
+    cy.get('#email').type('domingos@gmail.com')
     cy.get('textarea').type(lorem, {delay: 0})
     cy.contains('button', 'Enviar').click()
     cy.get('.success').should('be.visible')
@@ -69,4 +69,18 @@ describe('Central de Atendinebto ao Cliente TAT', function(){
     cy.get('.success').should('be.visible')
 
   })
+
+  it('seleciona um produto (YouTube) por seu texto', () =>{
+    cy.get('select#product').select('YouTube').should('have.value', 'youtube')
+  })
+  
+
+  it('seleciona um produto (Mentoria) por seu valor (value)', () =>{
+    cy.get('select#product').select('mentoria').should('have.value', 'mentoria')
+  })
+
+  it.only('seleciona um produto (Blog) por seu índice', ()=> {
+    cy.get('select#product').select(1).should('have.value', 'blog')
+  })
+
 })
