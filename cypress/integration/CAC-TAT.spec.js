@@ -34,11 +34,11 @@ describe('Central de Atendinebto ao Cliente TAT', function () {
         cy.get('#phone').type('Eduardo').should('have.value', '')
     })
 
-    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+    it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
         cy.get('#firstName').type('Eduardo')
         cy.get('#lastName').type('Domingos')
         cy.get('#email').type('edudomingos@gmail.com')
-        cy.get('#phone-checkbox').click()
+        cy.get('#phone-checkbox').check()
         cy.get('textarea').type(lorem, { delay: 0 })
         cy.contains('button', 'Enviar').click()
         cy.get('.error').should('be.visible')
@@ -97,18 +97,35 @@ describe('Central de Atendinebto ao Cliente TAT', function () {
         cy.get('[type="radio"]').check('feedback').should('be.checked')
     })
 
-    it('marca o tipo de atendimento "Feedback" de outa forma', () => {
+    it('marca o tipo de atendimento "Feedback" (de outa forma)', () => {
         cy.get('input[type="radio"][value="feedback"]')
             .check()
             .should('have.value', 'feedback')
     })
 
-    it.only('marca cada tipo de atendimento', () => {
+    it('marca cada tipo de atendimento', () => {
         cy.get('[type="radio"]')
-          .should('have.length', 3)
-          .each(radio => {
-            cy.get(radio).check().should('be.checked')
-          })
+            .should('have.length', 3)
+            .each(radio => {
+                cy.get(radio).check().should('be.checked')
+            })
     })
-    
+
+    it('marca ambos checkboxes, depois desmarca o último', () => {
+        cy.get('[type="checkbox"]')
+            .check()
+            .each(res => {
+                cy.get(res).should('be.checked')
+            })
+        cy.get('[type="checkbox"]').last().uncheck().should('not.be.checked')
+    })
+
+    it.only('marca ambos checkboxes, depois desmarca o último (de outra forma)', () => {
+        cy.get('[type="checkbox"]')
+            .check()
+            .should('be.checked')
+            .last()
+            .uncheck()
+            .should('not.be.checked')
+    })
 })
