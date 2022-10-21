@@ -34,7 +34,7 @@ describe('Central de Atendinebto ao Cliente TAT', function () {
         cy.get('#phone').type('Eduardo').should('have.value', '')
     })
 
-    it.only('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+    it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
         cy.get('#firstName').type('Eduardo')
         cy.get('#lastName').type('Domingos')
         cy.get('#email').type('edudomingos@gmail.com')
@@ -120,12 +120,39 @@ describe('Central de Atendinebto ao Cliente TAT', function () {
         cy.get('[type="checkbox"]').last().uncheck().should('not.be.checked')
     })
 
-    it.only('marca ambos checkboxes, depois desmarca o último (de outra forma)', () => {
+    it('marca ambos checkboxes, depois desmarca o último (de outra forma)', () => {
         cy.get('[type="checkbox"]')
             .check()
             .should('be.checked')
             .last()
             .uncheck()
             .should('not.be.checked')
+    })
+
+    it.only('seleciona um arquivo da pasta fixtures', () => {
+        cy.get('[type="file"]')
+            .selectFile('cypress/fixtures/example.json')
+            .should(input => {
+                expect(input[0].files[0].name).to.equal('example.json')
+            })
+    })
+
+    it.only('seleciona um arquivo simulando um drag-and-drop', () => {
+        cy.get('[type="file"]')
+            .selectFile('cypress/fixtures/example.json', {
+                action: 'drag-drop'
+            })
+            .should(input => {
+                expect(input[0].files[0].name).to.equal('example.json')
+            })
+    })
+
+    it.only('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+        cy.fixture('example.json', { encoding: null }).as('myFixture')
+        cy.get('[type="file"]')
+            .selectFile('@myFixture')
+            .should(input => {
+                expect(input[0].files[0].name).to.equal('example.json')
+            })
     })
 })
